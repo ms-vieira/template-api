@@ -8,6 +8,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 @Configuration
 public class ApiErrorConfig {
 
+    /*Classe de configuração para carregar o arquivo de mensagens de erro*/
+
     @Bean
     public MessageSource apiErrorMessageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

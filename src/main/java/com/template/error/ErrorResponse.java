@@ -14,16 +14,21 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 public class ErrorResponse {
 
+    /*Classe responsavel por criar o JSON de resposta quando lançado um erro*/
+
     private final int statusCode;
     private final List<ApiError> erros;
 
+    /*lista de erros*/
     static ErrorResponse of(HttpStatus status, List<ApiError> errors) {
         return new ErrorResponse(status.value(), errors);
     }
 
+    /*apenas um erro*/
     static ErrorResponse of(HttpStatus status, ApiError error) {
         return of(status, Collections.singletonList(error));
     }
+
     @JsonAutoDetect(fieldVisibility = ANY)
     @RequiredArgsConstructor
     static class ApiError {
