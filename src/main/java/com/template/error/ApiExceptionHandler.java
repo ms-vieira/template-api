@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -21,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ApiExceptionHandler {
@@ -44,6 +47,7 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    /*Error formato inválido*/
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ErrorResponse> handleInvalidFormatException(InvalidFormatException exception, Locale locale) {
         final String errorCode = "generic-1";
@@ -54,7 +58,7 @@ public class ApiExceptionHandler {
     }
 
     /*Recebe o código e retorna a mensagem mapeada no properties*/
-    private ApiError toApiError(String code, Locale locale, Object... args) {
+    public ApiError toApiError(String code, Locale locale, Object... args) {
         String message;
         try {
             message = apiErrorMessageSource.getMessage(code, args, locale);
