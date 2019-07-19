@@ -1,7 +1,6 @@
 package com.template.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -11,8 +10,11 @@ import java.math.BigDecimal;
 
 @Entity(name = "TEMPLATE")
 @Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class TemplateEntity {
+public class Template {
 
     /*Entidade do banco de dados*/
 

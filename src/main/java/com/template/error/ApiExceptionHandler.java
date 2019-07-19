@@ -2,6 +2,7 @@ package com.template.error;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.template.error.ErrorResponse.ApiError;
+import com.template.service.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -47,6 +48,15 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handlerBusinessException(BusinessException exception, Locale locale) {
+        final String errorCode = exception.getCode();
+        final HttpStatus status = exception.getStatus();
+
+        final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale));
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
     /*Error formato inválido*/
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ErrorResponse> handleInvalidFormatException(InvalidFormatException exception, Locale locale) {
@@ -54,7 +64,6 @@ public class ApiExceptionHandler {
         final HttpStatus status = BAD_REQUEST;
         final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale, exception.getValue()));
         return ResponseEntity.badRequest().body(errorResponse);
-
     }
 
     /*Recebe o código e retorna a mensagem mapeada no properties*/
